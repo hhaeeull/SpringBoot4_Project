@@ -6,6 +6,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 @Order(2)
 public class MyRunner implements ApplicationRunner {
@@ -15,7 +17,20 @@ public class MyRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("환경변수 myboot.name = " + myBootName);
-        System.out.println("server.port 환경변수 확인 " + args.containsOption("server.port"));
-        System.out.println("myboot.name 환경변수 확인 " + args.containsOption("myboot.name"));
+        System.out.println("server.port Program argument 확인 " + args.containsOption("server.port"));
+        System.out.println("myboot.name Program argument 확인 " + args.containsOption("myboot.name"));
+
+        //환경변수 목록을 확인하기
+        Set<String> optionNames = args.getOptionNames();
+        //기존의 for loop
+        for(String name: optionNames){
+            System.out.println("name = " + name);
+        }
+        //Iterable 의 default void forEach(Consumer<? super T> action)
+        //함수형 인터페이스의 추상 메서드 void accept(T t)
+        optionNames.forEach(name -> System.out.println(name));
+
+
+
     }
 }
