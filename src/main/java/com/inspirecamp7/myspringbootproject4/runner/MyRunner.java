@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 @Component
 @Order(2)
@@ -26,10 +27,23 @@ public class MyRunner implements ApplicationRunner {
         for(String name: optionNames){
             System.out.println("name = " + name);
         }
-        //Iterable 의 default void forEach(Consumer<? super T> action)
-        //함수형 인터페이스의 추상 메서드 void accept(T t)
-        optionNames.forEach(name -> System.out.println(name));
 
+        //1단계 - Anonymous Inner Class ( 익명 내부 클래스 )
+        optionNames.forEach(new Consumer<String>() {
+            @Override
+            public void accept(String name) {
+                System.out.println("Inner Class인 경우 name = " + name);
+            }
+        });
+        //java.lang.Iterable 의 default void forEach(Consumer<? super T> action)
+        //함수형 인터페이스 Consumer의 추상 메서드 void accept(T t)
+        //Consumer 인터페이스의 accept() 메서드를 람다식으로 표현
+        //2.단계 - 람다표현식
+        optionNames.forEach(optionName -> System.out.println(optionName));
+
+        //3단계 - Method Reference
+        // Consumer 인터페이스의 accept() 메서드를 Method Reference 로 표현하기
+        optionNames.forEach(System.out::println);
 
 
     }
